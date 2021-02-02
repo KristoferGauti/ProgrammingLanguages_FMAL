@@ -23,7 +23,6 @@ let rec lastTrue f n =
     | _,_ when n < 1 -> -1
     | true,_ -> range
     | false,_ -> lastTrue f (range)
-lastTrue (fun x -> x / 10) 100;;
 
 // (ii)
 // lastEqual : 'a -> (int -> 'a) -> int -> int when 'a : equality
@@ -35,6 +34,19 @@ let lastEqual x f n =
 
 // (iii)
 // firstTrue : (int -> bool) -> int -> int
+
+let rec helper f n x = 
+    match f x, n with
+    | _,_ when n < 1 -> -1
+    | _,_ when x = n -> -1
+    | true,_ -> x
+    | _,_ -> helper f n (x+1)
+    
+
+let firstTrue f n =
+    helper f n 0
+
+
 
 
 
