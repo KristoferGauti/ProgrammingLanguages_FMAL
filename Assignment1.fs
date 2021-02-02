@@ -23,11 +23,12 @@ let rec lastTrue f n =
     | _,_ when n < 1 -> -1
     | true,_ -> range
     | false,_ -> lastTrue f (range)
+lastTrue (fun x -> x / 10) 100;;
 
 // (ii)
 // lastEqual : 'a -> (int -> 'a) -> int -> int when 'a : equality
-let lastEqual =
-    
+let lastEqual x f n =
+    lastTrue (fun n -> f n = x) n 
 
 
 
