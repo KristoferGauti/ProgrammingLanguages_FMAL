@@ -18,17 +18,16 @@ let rec nf n =
 // (i)
 // lastTrue : (int -> bool) -> int -> int
 let rec lastTrue f n =
-    match f n, n with
-    | _,0 -> -1
-    | true,_ -> n
-    | false,_ -> lastTrue f (n-1)
-    
-
-
-
+    let range = n-1
+    match f range, range with
+    | _,_ when n < 1 -> -1
+    | true,_ -> range
+    | false,_ -> lastTrue f (range)
 
 // (ii)
 // lastEqual : 'a -> (int -> 'a) -> int -> int when 'a : equality
+let lastEqual =
+    
 
 
 
