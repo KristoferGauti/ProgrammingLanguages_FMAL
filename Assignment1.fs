@@ -17,8 +17,11 @@ let rec nf n =
 // Problem 2
 // (i)
 // lastTrue : (int -> bool) -> int -> int
-let lastTrue f n =
-    for num in 0 .. (n-1) do
+let rec lastTrue f n =
+    match f n, n with
+    | _,0 -> -1
+    | true,_ -> n
+    | false,_ -> lastTrue f (n-1)
     
 
 
