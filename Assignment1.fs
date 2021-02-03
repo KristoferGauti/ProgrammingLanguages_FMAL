@@ -67,35 +67,33 @@ ANSWER 2(iv)(b) HERE: ...
 let rec repeat_map f xs =
     match xs with
     | [] -> []
-    | x::xs -> f x :: (repeat_map f) (List.map f xs)
-repeat_map (fun x -> x + 1) [0..10];;
-repeat_map (fun x -> - x) [1..10];;
-repeat_map (fun x -> x + x) ["x"; "y"; "z"; "w"];;
+    | x::xs -> f x :: repeat_map f (List.map f xs)
     
 
 // Problem 4
 // (i)
-
 // sum_some : int option list -> int
-
-
+let rec sum_some xs =
+    match xs with
+    | [] -> 0
+    | x::xs -> match x with
+                | None -> 0 + sum_some xs
+                | Some x -> x + sum_some xs
 
 // (ii)  (uncomment the definition below when you've completed it)
 
-(*
 let sum_some2 xs =
     List.fold (fun s o ->
         match o with
-        ...) 0 xs
-*)
+        | None -> s
+        | Some o -> s+o) 0 xs
 
 // (iii)  (uncomment the definition below when you've completed it)
 
-(*
-let sum_some3 xs =
-    let f o = ...
-    List.fold (+) 0 (List.map f xs)
-*)
+// let sum_some3 xs =
+//     let f o = ...
+//     List.fold (+) 0 (List.map f xs)
+
 
 
 // Problem 5
