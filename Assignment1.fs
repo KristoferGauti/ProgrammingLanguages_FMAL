@@ -18,17 +18,16 @@ let rec nf n =
 // (i)
 // lastTrue : (int -> bool) -> int -> int
 let rec lastTrue f n =
-    let range = n-1
-    match f range, range with
+    let i = n-1
+    match f i, i with
     | _,_ when n < 1 -> -1
-    | true,_ -> range
-    | false,_ -> lastTrue f (range)
+    | true,_ -> i
+    | false,_ -> lastTrue f (i)
 
 // (ii)
 // lastEqual : 'a -> (int -> 'a) -> int -> int when 'a : equality
 let lastEqual x f n =
     lastTrue (fun n -> f n = x) n 
-
 
 
 
@@ -46,38 +45,35 @@ let rec helper f n x =
 let firstTrue f n =
     helper f n 0
 
-
-
-
-
 // (iv)
-
 // If  lastTrue (fun x -> f x > f (x + 1)) 100  evaluates to -1,
 // what can you say about  f?
-
 (*
 ANSWER 2(iv)(a) HERE: ...
-
-
+    By defining a function let f x = x and pass it into lastTrue (fun x -> f x > f (x + 1)) 100 we will get -1.
+    That means in our case that for every n from 0 to 99 there does not exist a number in that range that satisfies the
+    condition f x > f(x + 1).
 *)
 
 // How about if  lastTrue f 100 = firstTrue f 100  is  true?
-
 (*
 ANSWER 2(iv)(b) HERE: ...
-
 
 *)
 
 
 // Problem 3
-
 // repeat_map : ('a -> 'a) -> 'a list -> 'a list
-
-
+let rec repeat_map f xs =
+    match xs with
+    | [] -> []
+    | x::xs -> f x :: (repeat_map f) (List.map f xs)
+repeat_map (fun x -> x + 1) [0..10];;
+repeat_map (fun x -> - x) [1..10];;
+repeat_map (fun x -> x + x) ["x"; "y"; "z"; "w"];;
+    
 
 // Problem 4
-
 // (i)
 
 // sum_some : int option list -> int
