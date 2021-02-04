@@ -103,7 +103,7 @@
 // > ne_product (Cons (6, Cons (5, Cons (3, One 2))));;
 // val it : int = 180
 
-// > ne_append (Cons ("b", One "a")) (Cons ("x", One "y"));;
+// > ne_append (Cons ("b", One "a")) (Cons ("x", One "y"));; 
 // val it : string nelist = Cons ("b",Cons ("a",Cons ("x",One "y")))
 // > ne_append (One "a") (Cons ("x", One "y"));;
 // val it : string nelist = Cons ("a",Cons ("x",One "y"))

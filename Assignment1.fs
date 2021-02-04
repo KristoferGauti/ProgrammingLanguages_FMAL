@@ -103,14 +103,24 @@ type 'a nelist =
     | One of 'a
     | Cons of 'a * 'a nelist
 
+
 // (i)
 // ne_product : int nelist -> int
-
+let rec ne_product xs =
+    match xs with
+    | One(x) -> x
+    | Cons(x, Cons(y, z)) -> x * ne_product(Cons(y, z))
+    | Cons(x, One(y)) -> x * ne_product(One(y))
 
 // (ii)
-// ne_append : 'a nelist -> 'a nelist -> 'a nelist
-
-
+// ne_append : 'a nelist -> 'a nelist -> 'a nelist     [b;a] + [x;y] -> [b;a;x;y]
+let rec ne_append xs ys =
+    match xs with
+    | One(x) -> Cons(x, ys) //the last element in the linked list
+    | Cons(x, xs) -> Cons(x, ys) (ne_append(xs, ys)) //the first element in the linked list
+    
+ne_append (Cons ("b", One "a")) (Cons ("x", One "y"));; 
+//val it : string nelist = Cons ("b",Cons ("a",Cons ("x",One "y")))
 
 // (iii)
 // to_list : 'a nelist -> 'a list
