@@ -80,7 +80,7 @@
 // > sum_some2 [Some 1; Some 2; Some 3];;
 // val it : int = 6
 
-// > sum_some3 [];
+// > sum_some3 [];;
 // val it : int = 0
 // > sum_some3 [None; Some 2; None];;
 // val it : int = 2

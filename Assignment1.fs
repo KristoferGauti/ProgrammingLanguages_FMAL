@@ -52,13 +52,14 @@ let firstTrue f n =
 ANSWER 2(iv)(a) HERE: ...
     By defining a function let f x = x and pass it into lastTrue (fun x -> f x > f (x + 1)) 100 we will get -1.
     That means in our case that for every n from 0 to 99 there does not exist a number in that range that satisfies the
-    condition f x > f(x + 1).
+    condition f x > f(x + 1). Therfore the function f is decreasing as x is increasing.
 *)
 
 // How about if  lastTrue f 100 = firstTrue f 100  is  true?
 (*
 ANSWER 2(iv)(b) HERE: ...
-
+    Since lastTrue finds the last number in a range from 0 to n and firstTrue finds the first number in a range from 0 to n 
+    to satisfy the boolean function. There has to be only one value that satisfies the condition given, whereas lastTrue f 100 = firstTrue f 100 is true.
 *)
 
 
@@ -90,44 +91,38 @@ let sum_some2 xs =
 
 // (iii)  (uncomment the definition below when you've completed it)
 
-// let sum_some3 xs =
-//     let f o = ...
-//     List.fold (+) 0 (List.map f xs)
-
+let sum_some3 xs =
+    let f o = match o with
+    | None -> 0
+    | Some o -> o  
+    List.fold (+) 0 (List.map f xs)
 
 
 // Problem 5
-
 type 'a nelist =
-  | One of 'a
-  | Cons of 'a * 'a nelist
-
+    | One of 'a
+    | Cons of 'a * 'a nelist
 
 // (i)
-
 // ne_product : int nelist -> int
 
 
 // (ii)
-
 // ne_append : 'a nelist -> 'a nelist -> 'a nelist
 
 
 
 // (iii)
-
 // to_list : 'a nelist -> 'a list
 
 let to_list (xs : 'a nelist) : 'a list = failwith "to implement" 
 
 
 // (iv)
-
 // ne_map : ('a -> 'b) -> 'a nelist -> 'b nelist
 
 
 // (v)
-
 // to_pair : 'a nelist -> 'a * 'a list
 
 let to_pair xs =
@@ -156,9 +151,9 @@ ANSWER 5(vi) HERE: ...
 // Problem 6
 
 type product_tree =
-  { value: int
-  ; children: product_tree list
-  ; product: int option }
+    { value: int
+    ; children: product_tree list
+    ; product: int option }
 
 // (i)
 
