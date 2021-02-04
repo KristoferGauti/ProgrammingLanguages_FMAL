@@ -116,21 +116,25 @@ let rec ne_product xs =
 // ne_append : 'a nelist -> 'a nelist -> 'a nelist     [b;a] + [x;y] -> [b;a;x;y]
 let rec ne_append xs ys =
     match xs with
-    | One(x) -> Cons(x, ys) //the last element in the linked list
-    | Cons(x, xs) -> Cons(x, ys) (ne_append(xs, ys)) //the first element in the linked list
+    | One(x) -> Cons(x, ys)                      //the last element in the linked list
+    | Cons(x, xs) -> Cons (x, (ne_append xs ys)) //the first element in the linked list
     
-ne_append (Cons ("b", One "a")) (Cons ("x", One "y"));; 
-//val it : string nelist = Cons ("b",Cons ("a",Cons ("x",One "y")))
 
 // (iii)
 // to_list : 'a nelist -> 'a list
 
-let to_list (xs : 'a nelist) : 'a list = failwith "to implement" 
+let rec to_list (xs : 'a nelist) : 'a list = 
+    match xs with
+    | One(x) -> [x]
+    | Cons(x, xs) -> x :: to_list(xs)
 
 
 // (iv)
 // ne_map : ('a -> 'b) -> 'a nelist -> 'b nelist
-
+let rec ne_map f xs =
+    match xs with
+    | One(x) -> One(f x)
+    | Cons(x, xs) -> Cons(f x, (ne_map f xs))
 
 // (v)
 // to_pair : 'a nelist -> 'a * 'a list
@@ -141,7 +145,14 @@ let to_pair xs =
     | Cons (x, xs) -> (x, to_list xs)
 
 // from_pair : 'a * 'a list -> 'a nelist
+let from_pair x xs =
+    to_pair xs //DO later
 
+
+from_pair ("x", []);;
+from_pair ("x", ["y"; "z"; "w"]);;
+// val it : string nelist = One "x"
+// val it : string nelist = Cons ("x",Cons ("y",Cons ("z",One "w")))
 
 
 // (vi)
