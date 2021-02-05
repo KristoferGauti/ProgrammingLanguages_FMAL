@@ -201,4 +201,9 @@ let rec get_product t =
 // (iii)
 // fill_products : product_tree -> product_tree
 
+let rec fill_products t =
+    match t.value,t.children,t.product with
+    | _,_,None -> t.product = Some(t.value), List.fold(fun acc element -> fill_products element) 0 t.children
+    | _,_,_ -> List.fold(fun acc element -> fill_products element) 0 t.children
+    
 
