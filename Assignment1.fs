@@ -177,10 +177,29 @@ type product_tree =
 // (i)
 // are_same : product_tree -> product_tree -> bool
 
+//psuedocode for the function are_same
+// let are same t1 t2 =
+//     if t1.children.lenght != t2.children.lenght -> false
+//     if t1.children.lenght = 0 -> true
+//     else 
+//         for i in range(t1.children.length):
+//             if t1.children[i] = t2.children[i] then are same t1.children[i] t2.children[i]
+//             else return false
+let rec are_same t1 t2 =
+    if t1.value = t2.value then List.forall2 are_same t1.children t2.children else false
+
 
 
 // (ii)
 // get_product : product_tree -> int
+let rec get_product t = 
+    match t.children with
+    | [] -> t.value
+    | _ -> List.fold(fun acc subtree -> acc * subtree.value * get_product subtree) 1 t.children
+get_product t1;;
+get_product t1';;
+get_product t2;;
+get_product t2';;
 
 
 
