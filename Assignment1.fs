@@ -195,12 +195,7 @@ let rec are_same t1 t2 =
 let rec get_product t = 
     match t.children with
     | [] -> t.value
-    | _ -> List.fold(fun acc subtree -> acc * subtree.value * get_product subtree) 1 t.children
-get_product t1;;
-get_product t1';;
-get_product t2;;
-get_product t2';;
-
+    | _ -> t.value * List.fold(fun acc subtree ->  acc * get_product subtree) 1 t.children
 
 
 // (iii)
