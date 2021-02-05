@@ -122,7 +122,6 @@ let rec ne_append xs ys =
 
 // (iii)
 // to_list : 'a nelist -> 'a list
-
 let rec to_list (xs : 'a nelist) : 'a list = 
     match xs with
     | One(x) -> [x]
@@ -145,51 +144,47 @@ let to_pair xs =
     | Cons (x, xs) -> (x, to_list xs)
 
 // from_pair : 'a * 'a list -> 'a nelist
-let from_pair x xs =
-    to_pair xs //DO later
-
+let rec from_pair(x, xs) =
+    match x, xs with
+    | _,[] -> One(x)
+    | x, xx::xxs -> Cons(x, from_pair(xx,xxs))
 
 from_pair ("x", []);;
 from_pair ("x", ["y"; "z"; "w"]);;
-// val it : string nelist = One "x"
-// val it : string nelist = Cons ("x",Cons ("y",Cons ("z",One "w")))
+from_pair (10, [1..5]);;
+from_pair ([1], [[2..3]; [4..7]]);;
 
 
 // (vi)
-
 // Is it possible to write a function  from_list : 'a list -> 'a nelist
 // such that the expressions  to_list (from_list xs) = xs
 // and  from_list (to_list ys) = ys  evaluate to  true?
-// Explain why.
-
+// Explain why.       to_list takes 'a nelist -> 'a list   from_list takes 'a list -> 'a nelist
 (*
 ANSWER 5(vi) HERE: ...
-
-
+    That is possible whereas to_list takes as an argument 'a nelist and returns 'a list and from_list takes 'a list and returns 'a nelist.
+    With that in mind, we can call to_list (from_list 'a list xs) = 'a list xs;; which will return true for every 'a list xs. If we run 
+    from_list (to_list 'a nelist ys) = 'a nelist ys;; which returns true for every 'a nelist ys.
+    Thus to_list (from_list xs) = xs and from_list (to_list ys) = ys  evaluates to true.
 *)
 
-
 // Problem 6
-
 type product_tree =
     { value: int
     ; children: product_tree list
     ; product: int option }
 
 // (i)
-
 // are_same : product_tree -> product_tree -> bool
 
 
 
 // (ii)
-
 // get_product : product_tree -> int
 
 
 
 // (iii)
-
 // fill_products : product_tree -> product_tree
 
 
