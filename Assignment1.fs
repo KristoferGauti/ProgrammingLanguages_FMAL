@@ -195,15 +195,21 @@ let rec are_same t1 t2 =
 let rec get_product t = 
     match t.children with
     | [] -> t.value
-    | _ -> t.value * List.fold(fun acc subtree ->  acc * get_product subtree) 1 t.children
+    | _ -> t.value * List.fold(fun acc subtree -> acc * get_product subtree) 1 t.children
 
 
 // (iii)
 // fill_products : product_tree -> product_tree
-
 let rec fill_products t =
     match t.value,t.children,t.product with
-    | _,_,None -> t.product = Some(t.value), List.fold(fun acc element -> fill_products element) 0 t.children
-    | _,_,_ -> List.fold(fun acc element -> fill_products element) 0 t.children
+    | _,_,None -> let x = { value = t.value; children = t.children; product = Some t.value } //tree which has all its branches set to Some x not None
+                  List.fold(fun acc element -> fill_products element) 0 t.children 
+    | _,_,Some y -> List.map (get_product t) t.children //x.children virkar ekki
+                  
+                  
+//create a tree and calculate the product 
+//calculate the products of the children with map
+//create a new tree with the new product and return it
+                  
     
 
