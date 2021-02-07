@@ -198,26 +198,19 @@ let rec get_product t =
     | _ -> t.value * List.fold(fun acc subtree -> acc * get_product subtree) 1 t.children
 
 
+
 // (iii)
 // fill_products : product_tree -> product_tree
+//Plan: create a tree and calculate the product of the children
+//calculate the products of the children with map
+//create a new tree with the new product and return it
 let rec fill_products t =
-
-    match t.children with
-    | [] -> {value = t.value; children = t.children; product = Some (get_product t)} 
-    //| subtree::rest -> subtree          //subtree is a product_tree and rest is a product_tree list (product_tree.children)
-    | subtree::rest -> let result_tree = (List.find(fun tree -> tree.children = []) rest)
-                       let next_children = {value = subtree.value; children = [fill_products result_tree]; product = Some subtree.value}
-                       {value = t.value; children = [next_children]; product = Some (get_product t)}
+    let subtree_list = List.map (fill_products) t.children                       //returns a list of all eafs
+    {value = t.value; children = subtree_list; product = Some(get_product t)}   //creates a new tree with filled products
+                       
                        
                      
 
-fill_products t1;;
-fill_products t1';;  
-fill_products t2;;              
-                  
-//create a tree and calculate the product 
-//calculate the products of the children with map
-//create a new tree with the new product and return it
                   
     
 
