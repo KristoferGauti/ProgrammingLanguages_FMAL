@@ -205,7 +205,7 @@ let rec get_product t =
 //calculate the products of the children with map
 //create a new tree with the new product and return it
 let rec fill_products t =
-    let subtree_list = List.map (fill_products) t.children                       //returns a list of all eafs
+    let subtree_list = List.map (fill_products) t.children                      //returns a list of all leafs
     {value = t.value; children = subtree_list; product = Some(get_product t)}   //creates a new tree with filled products
                        
                        
