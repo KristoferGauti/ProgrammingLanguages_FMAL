@@ -201,11 +201,19 @@ let rec get_product t =
 // (iii)
 // fill_products : product_tree -> product_tree
 let rec fill_products t =
-    match t.value,t.children,t.product with
-    | _,_,None -> let x = { value = t.value; children = t.children; product = Some t.value } //tree which has all its branches set to Some x not None
-                  List.fold(fun acc element -> fill_products element) 0 t.children 
-    | _,_,Some y -> List.map (get_product t) t.children //x.children virkar ekki
-                  
+
+    match t.children with
+    | [] -> {value = t.value; children = t.children; product = Some (get_product t)} 
+    //| subtree::rest -> subtree          //subtree is a product_tree and rest is a product_tree list (product_tree.children)
+    | subtree::rest -> let result_tree = (List.find(fun tree -> tree.children = []) rest)
+                       let next_children = {value = subtree.value; children = [fill_products result_tree]; product = Some subtree.value}
+                       {value = t.value; children = [next_children]; product = Some (get_product t)}
+                       
+                     
+
+fill_products t1;;
+fill_products t1';;  
+fill_products t2;;              
                   
 //create a tree and calculate the product 
 //calculate the products of the children with map
