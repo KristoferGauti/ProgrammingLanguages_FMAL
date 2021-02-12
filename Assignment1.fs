@@ -29,11 +29,8 @@ let rec lastTrue f n =
 let lastEqual x f n =
     lastTrue (fun n -> f n = x) n 
 
-
-
 // (iii)
 // firstTrue : (int -> bool) -> int -> int
-
 let rec helper f n x = 
     match f x, n with
     | _,_ when n < 1 -> -1
@@ -41,7 +38,6 @@ let rec helper f n x =
     | true,_ -> x
     | _,_ -> helper f n (x+1)
     
-
 let firstTrue f n =
     helper f n 0
 
@@ -51,7 +47,7 @@ let firstTrue f n =
 (*
 ANSWER 2(iv)(a) HERE: ...
     By defining a function let f x = x and pass it into lastTrue (fun x -> f x > f (x + 1)) 100 we will get -1.
-    That means in our case that for every n from 0 to 99 there does not exist a number in that range that satisfies the
+    That means for every n from 0 to 99 there does not exist a number in that range that satisfies the
     condition f x > f(x + 1). Therfore the function f is decreasing as x is increasing.
 *)
 
@@ -70,7 +66,6 @@ let rec repeat_map f xs =
     | [] -> []
     | x::xs -> f x :: repeat_map f (List.map f xs)
     
-
 // Problem 4
 // (i)
 // sum_some : int option list -> int
@@ -82,7 +77,6 @@ let rec sum_some xs =
                 | Some x -> x + sum_some xs
 
 // (ii)  (uncomment the definition below when you've completed it)
-
 let sum_some2 xs =
     List.fold (fun s o ->
         match o with
@@ -90,19 +84,16 @@ let sum_some2 xs =
         | Some o -> s+o) 0 xs
 
 // (iii)  (uncomment the definition below when you've completed it)
-
 let sum_some3 xs =
     let f o = match o with
     | None -> 0
     | Some o -> o  
     List.fold (+) 0 (List.map f xs)
 
-
 // Problem 5
 type 'a nelist =
     | One of 'a
     | Cons of 'a * 'a nelist
-
 
 // (i)
 // ne_product : int nelist -> int
@@ -119,14 +110,12 @@ let rec ne_append xs ys =
     | One(x) -> Cons(x, ys)                      //the last element in the linked list
     | Cons(x, xs) -> Cons (x, (ne_append xs ys)) //the first element in the linked list
     
-
 // (iii)
 // to_list : 'a nelist -> 'a list
 let rec to_list (xs : 'a nelist) : 'a list = 
     match xs with
     | One(x) -> [x]
     | Cons(x, xs) -> x :: to_list(xs)
-
 
 // (iv)
 // ne_map : ('a -> 'b) -> 'a nelist -> 'b nelist
@@ -137,7 +126,6 @@ let rec ne_map f xs =
 
 // (v)
 // to_pair : 'a nelist -> 'a * 'a list
-
 let to_pair xs =
     match xs with 
     | One x -> (x, [])
@@ -149,10 +137,6 @@ let rec from_pair(x, xs) =
     | _,[] -> One(x)
     | x, xx::xxs -> Cons(x, from_pair(xx,xxs))
 
-from_pair ("x", []);;
-from_pair ("x", ["y"; "z"; "w"]);;
-from_pair (10, [1..5]);;
-from_pair ([1], [[2..3]; [4..7]]);;
 
 
 // (vi)
@@ -164,7 +148,7 @@ from_pair ([1], [[2..3]; [4..7]]);;
 ANSWER 5(vi) HERE: ...
     That is possible whereas to_list takes as an argument 'a nelist and returns 'a list and from_list takes 'a list and returns 'a nelist.
     With that in mind, we can call to_list (from_list 'a list xs) = 'a list xs;; which will return true for every 'a list xs. If we run 
-    from_list (to_list 'a nelist ys) = 'a nelist ys;; which returns true for every 'a nelist ys.
+    from_list (to_list 'a nelist ys) = 'a nelist ys;; it will return true for every 'a nelist ys.
     Thus to_list (from_list xs) = xs and from_list (to_list ys) = ys  evaluates to true.
 *)
 
@@ -188,16 +172,12 @@ type product_tree =
 let rec are_same t1 t2 =
     if t1.value = t2.value then List.forall2 are_same t1.children t2.children else false
 
-
-
 // (ii)
 // get_product : product_tree -> int
 let rec get_product t = 
     match t.children with
     | [] -> t.value
     | _ -> t.value * List.fold(fun acc subtree -> acc * get_product subtree) 1 t.children
-
-
 
 // (iii)
 // fill_products : product_tree -> product_tree
@@ -208,9 +188,3 @@ let rec fill_products t =
     let subtree_list = List.map (fill_products) t.children                      //returns a list of all leafs
     {value = t.value; children = subtree_list; product = Some(get_product t)}   //creates a new tree with filled products
                        
-                       
-                     
-
-                  
-    
-
