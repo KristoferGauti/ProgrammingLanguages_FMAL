@@ -1,7 +1,7 @@
 // T-501-FMAL, Spring 2021, Assignment 1
 
 
-"""STUDENT NAMES HERE: Bergur Tareq Tamimi Einarsson & Kristofer Gauti Þórhallsson"""
+//STUDENT NAMES HERE: Bergur Tareq Tamimi Einarsson & Kristofer Gauti Þórhallsson
 
 
 module Assignment1
@@ -187,4 +187,3 @@ let rec get_product t =
 let rec fill_products t =
     let subtree_list = List.map (fill_products) t.children                      //returns a list of all leafs
     {value = t.value; children = subtree_list; product = Some(get_product t)}   //creates a new tree with filled products
-                       
