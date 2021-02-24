@@ -201,9 +201,10 @@ let rec eval (e : expr) (env : envir) : value =
 
 
 // Problem 3
-
-let to_float (v : value) : float = failwith "to implement"
-
+let to_float (v : value) : float =
+    match v with
+    | F x -> float x
+    | I x -> float x
 
 // Problem 4
 
