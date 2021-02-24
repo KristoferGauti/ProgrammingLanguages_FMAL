@@ -47,6 +47,8 @@ let rec lookup (x : string) (env : (string * 'a) list) : 'a =
     | []          -> failwith (x + " not found")
     | (y, v)::env -> if x = y then v else lookup x env
 
+ 
+
 let paren b s = if b then  "(" + s + ")" else s
 
 let iprettyprint (e : iexpr) : string =
@@ -149,13 +151,16 @@ let rec reval (inss : rcode) (stk : stack) (renv : renvir) =
 
 
 
-
-
 // Problem 1
+
+let rec lookup2 (x : string) (env : (string * 'a) list) : 'a =
+    match env with
+    | []          -> I(0)
+    | (y, v)::env -> if x = y then v else lookup2 x env
 
 let rec ieval (e : iexpr) (env : envir) : value =
     match e with
-    | IVar x -> lookup x env                       // to modify
+    | IVar x -> lookup2 x env                       // to modify
     | INumI i -> I i
     | INumF f -> F f
     | IPlus (e1, e2) -> plus_value (ieval e1 env, ieval e2 env)
