@@ -202,13 +202,13 @@ let rec eval (e : expr) (env : envir) : value =
         match eval e env, eval et env, eval ef env with
         | i1, I i2, I i3 -> if is_positive_value (i1) then I i2 else I i3
         | i1, F i2, F i3 -> if is_positive_value (i1) then F i2 else F i3
+        | _ -> failwith "wrong operand type"
     | Match (e, xi, ei, xf, ef) -> 
-        // match eval e env with
-        // | I(e) -> eval ei ([xi, I(e)] @ env)
-        // | F(e) -> eval ef ([xf, F(e)] @ env)
         match eval e env with
-        | I i -> eval ei (env@[xi, I i]);
-        | F f -> eval ef (env@[xf, F f]) 
+        | I(e) -> eval ei ([xi, I(e)] @ env)
+        | F(e) -> eval ef ([xf, F(e)] @ env)
+        | _ -> failwith "wrong operand type"
+      
         
 
 
@@ -221,11 +221,8 @@ let to_float (v : value) : float =
 // Problem 4
 
 let to_float_expr (e : expr) : expr =
-    //Match (e, "x", (IntToFloat (Var "x")), "y", Var "y")
-    Match (e, "integer", (IntToFloat e), "float", e)
-    
-   
-
+    Match (e, "x", (IntToFloat (Var "x")), "y", Var "y")
+ 
 let plus_expr (e1 : expr, e2 : expr) : expr = 
     Match(e1,
         "integer",Match(e2,
@@ -256,15 +253,6 @@ let rec add_matches (e : iexpr) : expr =
     | ITimes(e1, e2) -> times_expr(add_matches e1, add_matches e2)
     | INeg e -> Neg (add_matches e)
     | IIfPositive(e, e1, e2) -> IfPositive(add_matches e, add_matches e1, add_matches e2)
-
-    // match e with
-    // | IVar of string
-    // | INumI of int
-    // | INumF of float
-    // | IPlus of iexpr * iexpr
-    // | ITimes of iexpr * iexpr
-    // | INeg of iexpr
-    // | IIfPositive of iexpr * iexpr * iexpr
 
 
 // Problem 6
