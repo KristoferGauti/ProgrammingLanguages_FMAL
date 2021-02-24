@@ -176,27 +176,38 @@ let rec ieval (e : iexpr) (env : envir) : value =
 
 let rec eval (e : expr) (env : envir) : value =
     match e with
-    | Var x -> lookup x env
+    | Var x -> lookup2 x env // possibly have to change this to V2
     | NumI i -> I i
     | NumF f -> F f
     | Plus (e1, e2) ->                             // to complete
         match eval e1 env, eval e2 env with
         | I i1, I i2 -> I (i1 + i2)
+        | F i1, F i2 -> F (i1 + i2)
         | _ -> failwith "wrong operand type"
     | Times (e1, e2) ->                            // to complete
         match eval e1 env, eval e2 env with
         | I i1, I i2 -> I (i1 * i2)
+        | F i1, F i2 -> F (i1 * i2)
         | _ -> failwith "wrong operand type"
     | Neg e ->                                     // to complete
         match eval e env with
         | I i -> I (- i)
+        | F i -> F (- i)
         | _ -> failwith "wrong operand type"
     | IntToFloat e ->
         match eval e env with
         | I i -> F (float i)
         | _ -> failwith "wrong operand type"
-    | IfPositive (e, et, ef) -> failwith "to implement"
-    | Match (e, xi, ei, xf, ef) -> failwith "to implement"
+    | IfPositive (e, et, ef) -> 
+        match eval e env, eval et env, eval ef env with
+        | i1, I i2, I i3 -> if is_positive_value (i1) then I i2 else I i3
+        | i1, F i2, F i3 -> if is_positive_value (i1) then F i2 else F i3
+        | _,_,_ -> failwith "wrong operand type"
+    | Match (e, xi, ei, xf, ef) -> 
+        match eval e env with
+        | I(e) -> eval ei [xi,I(e)]
+        | F(e) -> eval ef [xf,F(e)]
+        | _-> failwith "wrong operand type"
         
 
 
