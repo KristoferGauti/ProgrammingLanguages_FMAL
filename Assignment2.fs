@@ -205,8 +205,8 @@ let rec eval (e : expr) (env : envir) : value =
         | _,_,_ -> failwith "wrong operand type"
     | Match (e, xi, ei, xf, ef) -> 
         match eval e env with
-        | I(e) -> eval ei [xi, I(e)]
-        | F(e) -> eval ef [xf, F(e)]
+        | I(e) -> eval ei ([xi, I(e)] @ env)
+        | F(e) -> eval ef ([xf, F(e)] @ env)
         | _ -> failwith "wrong operand type"
         
 
@@ -221,13 +221,27 @@ let to_float (v : value) : float =
 
 let to_float_expr (e : expr) : expr =
     Match (e, "x", (IntToFloat (Var "x")), "y", Var "y")
+    
    
 
 let plus_expr (e1 : expr, e2 : expr) : expr = 
-    Match(e1,"integer",Match(e2,"integer",Plus(e1,e2),"float",Plus(IntToFloat e1, e2)),"float",Match(e2,"integer",Plus(IntToFloat e2,e1),"float",Plus(e1,e2)))
+    Match(e1,
+        "integer",Match(e2,
+            "integer", Plus(e1,e2),
+            "float", Plus(to_float_expr e1, e2)
+        ),
+        "float", Plus(e1, to_float_expr e2)
+    )
 
 
-let times_expr (e1 : expr, e2 : expr) : expr = failwith "to implement"
+let times_expr (e1 : expr, e2 : expr) : expr = 
+    Match(e1,
+        "integer",Match(e2,
+            "integer", Times(e1,e2),
+            "float", Times(to_float_expr e1, e2)
+        ),
+        "float", Times(e1, to_float_expr e2)
+    )
 
 // Problem 5
 
