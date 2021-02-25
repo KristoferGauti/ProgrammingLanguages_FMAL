@@ -317,12 +317,23 @@ let rec add_casts (e : iexpr) (tyenv : tyenvir) : expr =
 
 
 // Problem 8
-
 // ANSWER 8 HERE:
+// Question for eval (add_matches e) [] and eval (add_casts e []) [];;
+// The functions eval (add_matches e) [] and eval (add_casts e []) [];; will return the same thing 
+// but the main behavior of those two functions is not the same. The function add_matches does not need
+// an environment to store its variable types whereas the function add_casts needs an environment to store
+// its variable types. For instance, add_casts has an environment which contains all the variable types for 
+// the add_casts function in order to convert the implicit expressions to expressions. On the other hand, 
+// the function add_matches does not have an environment to store its variable types, but the function 
+// takes an implicit expression and converts it straigth to an expression without needing the variable types.
+// That implies that the function add_casts behaves like a strongly typed programming language and the function
+// add_matches behaves like a weekly typed language.
+
+//Question for infer (add_matches e) [] and infer (add_casts e []) [];; 
+//Same reason as state here above
 
 
 // Problem 9
-
 let rlower (inss : rcode) : rcode = 
     match inss with
     | [] -> []
