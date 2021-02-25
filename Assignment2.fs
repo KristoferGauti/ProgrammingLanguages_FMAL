@@ -202,6 +202,8 @@ let rec eval (e : expr) (env : envir) : value =
         match eval e env, eval et env, eval ef env with
         | i1, I i2, I i3 -> if is_positive_value (i1) then I i2 else I i3
         | i1, F i2, F i3 -> if is_positive_value (i1) then F i2 else F i3
+        | i1, I i2, F i3 -> if is_positive_value (i1) then I i2 else F i3
+        | i1, F i2, I i3 -> if is_positive_value (i1) then F i2 else I i3
         | _ -> failwith "wrong operand type"
     | Match (e, xi, ei, xf, ef) -> 
         match eval e env with
@@ -243,6 +245,7 @@ let times_expr (e1 : expr, e2 : expr) : expr =
     )
 
 // Problem 5
+
 
 let rec add_matches (e : iexpr) : expr = 
     match e with
