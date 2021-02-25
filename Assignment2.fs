@@ -287,6 +287,11 @@ let rec infer (e : expr) (tyenv : tyenvir) : typ =
         | Int -> infer ei ([xi, Int] @ tyenv)
         | Float -> infer ef ([xf, Float] @ tyenv)
         | _ -> failwith "wrong operand type"
+     | IntToFloat (n) ->
+        match infer n tyenv with
+        | Int -> Float
+        | Float -> failwith "wrong operand type"
+
 
 
 
