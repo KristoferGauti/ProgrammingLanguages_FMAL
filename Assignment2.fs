@@ -152,10 +152,9 @@ let rec reval (inss : rcode) (stk : stack) (renv : renvir) =
 
 
 // Problem 1
-
 let rec lookup2 (x : string) (env : (string * 'a) list) : 'a =
     match env with
-    | []          -> I(0)
+    | []          -> I 0
     | (y, v)::env -> if x = y then v else lookup2 x env
 
 let rec ieval (e : iexpr) (env : envir) : value =
@@ -210,8 +209,6 @@ let rec eval (e : expr) (env : envir) : value =
         | I(e) -> eval ei ([xi, I(e)] @ env)
         | F(e) -> eval ef ([xf, F(e)] @ env)
         | _ -> failwith "wrong operand type"
-      
-        
 
 
 // Problem 3
@@ -220,8 +217,8 @@ let to_float (v : value) : float =
     | F x -> float x
     | I x -> float x
 
-// Problem 4
 
+// Problem 4
 let to_float_expr (e : expr) : expr =
     Match (e, "x", (IntToFloat (Var "x")), "y", Var "y")
  
@@ -245,8 +242,6 @@ let times_expr (e1 : expr, e2 : expr) : expr =
     )
 
 // Problem 5
-
-
 let rec add_matches (e : iexpr) : expr = 
     match e with
     | IVar e -> Var e
@@ -259,9 +254,40 @@ let rec add_matches (e : iexpr) : expr =
 
 
 // Problem 6
-
 let rec infer (e : expr) (tyenv : tyenvir) : typ =
-    failwith "to implement"
+    match e with
+    | Var x -> lookup x tyenv // possibly have to change this to V2
+    | NumI i -> Int
+    | NumF f -> Float
+    | Plus (e1, e2) ->                    
+        match infer e1 tyenv, infer e2 tyenv with
+        | Int, Int -> Int
+        | Float, Float -> Float
+        | _ -> failwith "wrong operand type"
+    | Times (e1, e2) ->                        
+        match infer e1 tyenv, infer e2 tyenv with
+        | Int, Int -> Int
+        | Float, Float -> Float
+        //| Need more match cases thank you
+        | _ -> failwith "wrong operand type"
+    | Neg e ->                                
+        match infer e tyenv with
+        | Int -> Int
+        | Float -> Float
+        | _ -> failwith "wrong operand type"
+    | IfPositive (e, et, ef) -> 
+        match infer e tyenv, infer et tyenv, infer ef tyenv with
+        | Int, Int, Int -> Int
+        | Float, Float, Float -> Float
+        | Int, Float, Float -> Float
+        | Float, Int, Int -> Int
+        | _, _, _ -> failwith "branches of different types"
+    | Match (e, xi, ei, xf, ef) -> 
+        match infer e tyenv with
+        | Int -> infer ei ([xi, Int] @ tyenv)
+        | Float -> infer ef ([xf, Float] @ tyenv)
+        | _ -> failwith "wrong operand type"
+
 
 
 // Problem 7
