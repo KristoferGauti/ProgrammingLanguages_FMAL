@@ -10,6 +10,7 @@ module Assignment2
 
 (* Various type and function definitions, do not edit *)
 
+
 type iexpr =
     | IVar of string
     | INumI of int
@@ -159,7 +160,7 @@ let rec lookup2 (x : string) (env : (string * 'a) list) : 'a =
 
 let rec ieval (e : iexpr) (env : envir) : value =
     match e with
-    | IVar x -> lookup2 x env                       // to modify
+    | IVar x -> lookup2 x env                     // to modify
     | INumI i -> I i
     | INumF f -> F f
     | IPlus (e1, e2) -> plus_value (ieval e1 env, ieval e2 env)
@@ -169,7 +170,6 @@ let rec ieval (e : iexpr) (env : envir) : value =
         if is_positive_value (ieval e env)
         then ieval et env
         else ieval ef env
-
 
 // Problem 2
 
@@ -256,7 +256,7 @@ let rec add_matches (e : iexpr) : expr =
 // Problem 6
 let rec infer (e : expr) (tyenv : tyenvir) : typ =
     match e with
-    | Var x -> lookup x tyenv // possibly have to change this to V2
+    | Var x -> lookup x tyenv
     | NumI i -> Int
     | NumF f -> Float
     | Plus (e1, e2) ->                    
@@ -268,7 +268,6 @@ let rec infer (e : expr) (tyenv : tyenvir) : typ =
         match infer e1 tyenv, infer e2 tyenv with
         | Int, Int -> Int
         | Float, Float -> Float
-        //| Need more match cases thank you
         | _ -> failwith "wrong operand type"
     | Neg e ->                                
         match infer e tyenv with
@@ -287,18 +286,34 @@ let rec infer (e : expr) (tyenv : tyenvir) : typ =
         | Int -> infer ei ([xi, Int] @ tyenv)
         | Float -> infer ef ([xf, Float] @ tyenv)
         | _ -> failwith "wrong operand type"
-     | IntToFloat (n) ->
+    | IntToFloat (n) ->
         match infer n tyenv with
         | Int -> Float
         | Float -> failwith "wrong operand type"
 
 
-
-
 // Problem 7
-
-let add_casts (e : iexpr) (tyenv : tyenvir) : expr =
-    failwith "to implement"
+let rec add_casts (e : iexpr) (tyenv : tyenvir) : expr =
+    match e with
+    | IVar x -> Var x // possibly have to change this to V2
+    | INumI i -> NumI i
+    | INumF f -> NumF f
+    | IPlus(e1, e2) ->
+        match (infer(add_casts e1 tyenv) tyenv, infer(add_casts e2 tyenv) tyenv) with
+        | Int, Int -> Plus(add_casts e1 tyenv, add_casts e2 tyenv)
+        | Int, Float -> Plus(IntToFloat(add_casts e1 tyenv), add_casts e2 tyenv)
+        | Float, Int -> Plus(add_casts e1 tyenv, IntToFloat(add_casts e2 tyenv))
+        | Float, Float -> Plus(add_casts e1 tyenv, add_casts e2 tyenv)
+    | ITimes(e1, e2) ->
+        match (infer(add_casts e1 tyenv) tyenv, infer(add_casts e2 tyenv) tyenv) with
+        | Int, Int -> Times(add_casts e1 tyenv, add_casts e2 tyenv)
+        | Int, Float -> Times(IntToFloat(add_casts e1 tyenv), add_casts e2 tyenv)
+        | Float, Int -> Times(add_casts e1 tyenv, IntToFloat(add_casts e2 tyenv))
+        | Float, Float -> Times(add_casts e1 tyenv, add_casts e2 tyenv)
+    | INeg e ->
+        Neg(add_casts e tyenv)
+    | IIfPositive (e, et, ef) -> 
+        IfPositive(add_casts e tyenv, add_casts et tyenv, add_casts ef tyenv)
 
 
 // Problem 8
