@@ -308,4 +308,11 @@ let add_casts (e : iexpr) (tyenv : tyenvir) : expr =
 
 // Problem 9
 
-let rlower (inss : rcode) : rcode = failwith "to implement"
+let rlower (inss : rcode) : rcode = 
+    match inss with
+    | [] -> []
+    | RPop :: tail -> RStore :: RErase :: rlower tail
+    | RDup :: tail -> RStore :: RLoad 0 :: RLoad 0 :: RErase :: rlower tail
+    | RSwap :: tail -> RStore :: RStore :: RLoad 1 :: RLoad 0 :: RErase :: RErase :: rlower tail
+    | head :: tail ->  head :: rlower tail
+
