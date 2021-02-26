@@ -9,8 +9,6 @@ module Assignment2
 
 
 (* Various type and function definitions, do not edit *)
-
-
 type iexpr =
     | IVar of string
     | INumI of int
@@ -150,8 +148,6 @@ let rec reval (inss : rcode) (stk : stack) (renv : renvir) =
     | RSwap   :: inss, i2 :: i1 :: stk -> reval inss (i1 :: i2 :: stk) renv
     | _ -> failwith "reval: too few operands on stack"
 
-
-
 // Problem 1
 let rec lookup2 (x : string) (env : (string * 'a) list) : 'a =
     match env with
@@ -172,7 +168,6 @@ let rec ieval (e : iexpr) (env : envir) : value =
         else ieval ef env
 
 // Problem 2
-
 let rec eval (e : expr) (env : envir) : value =
     match e with
     | Var x -> lookup2 x env // possibly have to change this to V2
@@ -210,13 +205,11 @@ let rec eval (e : expr) (env : envir) : value =
         | F(e) -> eval ef ([xf, F(e)] @ env)
         | _ -> failwith "wrong operand type"
 
-
 // Problem 3
 let to_float (v : value) : float =
     match v with
     | F x -> float x
     | I x -> float x
-
 
 // Problem 4
 let to_float_expr (e : expr) : expr =
@@ -251,7 +244,6 @@ let rec add_matches (e : iexpr) : expr =
     | ITimes(e1, e2) -> times_expr(add_matches e1, add_matches e2)
     | INeg e -> Neg (add_matches e)
     | IIfPositive(e, e1, e2) -> IfPositive(add_matches e, add_matches e1, add_matches e2)
-
 
 // Problem 6
 let rec infer (e : expr) (tyenv : tyenvir) : typ =
@@ -291,7 +283,6 @@ let rec infer (e : expr) (tyenv : tyenvir) : typ =
         | Int -> Float
         | Float -> failwith "wrong operand type"
 
-
 // Problem 7
 let rec add_casts (e : iexpr) (tyenv : tyenvir) : expr =
     match e with
@@ -315,7 +306,6 @@ let rec add_casts (e : iexpr) (tyenv : tyenvir) : expr =
     | IIfPositive (e, et, ef) -> 
         IfPositive(add_casts e tyenv, add_casts et tyenv, add_casts ef tyenv)
 
-
 // Problem 8
 // ANSWER 8 HERE:
 // Question for eval (add_matches e) [] and eval (add_casts e []) [];;
@@ -327,14 +317,13 @@ let rec add_casts (e : iexpr) (tyenv : tyenvir) : expr =
 // the function add_matches does not have an environment to store its variable types, but the function 
 // takes an implicit expression and converts it straigth to an expression without needing the variable types.
 // That implies that the function add_casts behaves like a strongly typed programming language and the function
-// add_matches behaves like a weekly typed language.
+// add_matches behaves like a weekly typed programming language.
 
 //Question for infer (add_matches e) [] and infer (add_casts e []) [];; 
 //Same reason as state here above
 
-
 // Problem 9
-let rlower (inss : rcode) : rcode = 
+let rec rlower (inss : rcode) : rcode = 
     match inss with
     | [] -> []
     | RPop :: tail -> RStore :: RErase :: rlower tail
