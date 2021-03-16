@@ -12,9 +12,33 @@ module Assignment3
 
 (*
 ANSWER 1 HERE:
-Under static scoping the result is ...
-Under dynamic scoping the result is ...
+Under static scoping the result is 31 whereas static scoping refers its 
+variables to its top level environment. The Programming languages that uses static scoping
+are F sharp, Java, C and C++.
+In the code segment below, labeled "Static scoping", in line 26 f g = g 2 + g y. The variable y is equal to 3 wheres  
+according to static scoping y = 3 is at the top level in the environment. Thus the return 
+value of the functions is 31 whereas (fun 2 -> 2 + 13) + (fun 3 -> 3 + 13) -> 2+13 + 3+13 = 31
+
+Under dynamic scoping the result is 41 whereas dynamic scoping refers its variables to its 
+most recent environment. It is not commonly used among modern programming languages.
+In the code segment below, labeled "Dynamic scoping" in line 34 f g = g 2 + g y. The variable y is 
+equal to 13 whereas y was most recently evaluated in line 30 whereas 
+fun 2 -> 2+4) + (fun 3 -> 3+4) -> (2+4 + 3+4) -> y = 13
+Thus the return value of the function is 41 whereas 
+(fun 2 -> 2 + 13) + (fun 13 -> 13 + 13) -> (2+13) + (13+13) -> 41
+
 *)
+//Static scoping
+let y = 3 in // y = 3
+    let f g = g 2 + g y in // f g = g 2 + g 3 
+        let y = f (fun x -> x + 4) in // y = (fun 2 -> 2+4) + (fun 3 -> 3+4) -> (2+4 + 3+4) -> y = 13
+            f (fun x -> x + y) // -> (fun 2 -> 2 + 13) + (fun 3 -> 3 + 13) -> 2+13 + 3+13 = 31
+
+//Dynamic scoping
+let y = 3 in // y = 3
+    let f g = g 2 + g y in // f g = g 2 + g 13  
+        let y = f (fun x -> x + 4) in // y = f ((2+4 + 3+4)) -> y = 13
+            f (fun x -> x + y) // (fun 2 -> 2 + 13) + (fun 13 -> 13 + 13) -> (2+13) + (13+13) -> 41
 
 // Problem 2
 
