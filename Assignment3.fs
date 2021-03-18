@@ -320,8 +320,11 @@ let rec eval (e : expr) (env : envir) : value =
 
 let rec unify (t1 : typ) (t2 : typ) : unit =
     match t1, t2 with
-    | Float, Float -> ensureFloat t1
+    | Float, Float -> ()
     | Vector v1, Vector v2 -> unifyLength v1 v2
+    | Fun (l1, t1), Fun(l2, t2) -> if unifyLength l1 l2 = () then unify t1 t2
+    | _,_ -> failwith (sprintf "cannot unify Float and Vector(%s)" (showType t2))
+    
 
 
 // Problem 5
