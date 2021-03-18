@@ -317,18 +317,15 @@ let rec eval (e : expr) (env : envir) : value =
         eval ebody env'
 
 // Problem 4
-
 let rec unify (t1 : typ) (t2 : typ) : unit =
     match t1, t2 with
     | Float, Float -> ()
     | Vector v1, Vector v2 -> unifyLength v1 v2
     | Fun (l1, t1), Fun(l2, t2) -> if unifyLength l1 l2 = () then unify t1 t2
-    | _,_ -> failwith (sprintf "cannot unify Float and Vector(%s)" (showType t2))
+    | _,_ -> failwith (sprintf "cannot unify " + (showType t1) + " and " + (showType t2))
     
 
-
 // Problem 5
-
 let rec infer (e : expr) (lvl : int) (env : tyenvir) : typ =
     match e with
     | NumF _ -> Float
@@ -336,9 +333,20 @@ let rec infer (e : expr) (lvl : int) (env : tyenvir) : typ =
         let len = List.length v
         if len = 0 then failwith "empty vectors not allowed"
         Vector (LNum len)
-    | Plus (e1, e2) -> failwith "to implement"
-    | Average e -> failwith "to implement"
-    | Scale (e1, e2) -> failwith "to implement"
+    | Plus (e1, e2) -> 
+        let t1 = infer e1 lvl env
+        let t2 = infer e2 lvl env
+        unify t1 t2;
+        t2
+    | Average e -> 
+        let t = infer e lvl env
+        ensureVector t; 
+        Float
+    | Scale (e1, e2) -> 
+        let t1 = infer e1 lvl env
+        let t2 = infer e2 lvl env
+        ensureFloat t1
+        t2
     | IfPositive (e, e1, e2) ->
         let t = infer e lvl env
         ensureFloat t;
