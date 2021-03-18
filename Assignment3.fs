@@ -46,7 +46,7 @@ let rec list_fun f a xs =
     match xs with
     | [] -> a
     | [x] -> x
-    | x::xs -> list_fun f x [(f a :: xs).Head]
+    | x::xs -> list_fun f x [f a]
 
 list_fun (fun x -> "a") "a" ["1";"2";"3"];;
 list_fun (fun x -> 1) 2 [1;2;3];;
@@ -65,32 +65,48 @@ option_fun (fun x -> 1) 100 (Some 1000);;
 
 (*
 ANSWER 3(i) HERE:
-
+    ’a -> ’a and ’a -> int list
+    In order to unify the pairs, 'a must be substituded into 'a list.
+    After the substitution, the pairs will be: 'a list -> 'a list and 'a list -> 'a list
 *)
 
 (*
 ANSWER 3(ii) HERE:
-If 'b is an int list, then the pairs can be unified
+    ’a -> ’b and ’a -> int list
+    In order to unify the pairs, 'b must be substituted into int list
+    After the substitution, the pairs will be: 'a -> int list and 'a -> int list
 *)
 
 (*
 ANSWER 3(iii) HERE:
-
+    (int -> int) -> (int -> int) and ’a -> ’a
+    In order to unify the pairs, 'a must be substituded into a function that 
+    takes in an int as its parameter and returns an int. After the 
+    substitution, the pairs will be: (int -> int) -> (int -> int) and (int -> int) -> (int -> int)
 *)
 
 (*
 ANSWER 3(iv) HERE:
-If 'b is 'a list, then the pairs can be unified
+    ’a list -> ’a list and ’b -> ’b
+    In order to unify the pairs, 'b must be substituted into 'a list
+    After the substitution, the pairs will be 'a list -> 'a list
 *)
 
 (*
 ANSWER 3(v) HERE:
-    can not be unified
+    ’a list -> ’a and ’b -> ’b
+    The pairs cannot be unified whereas 'b cannot be substituted to a type that unifies the pairs
+    For instance if 'b is a type of 'a list, then the pairs would be: 'a list -> 'a and 'a list -> 'a list.
+    A function that takes 'a list as its parameter and returns 'a cannot be unified with a function that takes
+    'b as its parameter and returns 'b
 *)
 
 (*
 ANSWER 3(vi) HERE:
-
+    (’a -> ’b) -> ’c and ’d -> ’e list
+    The pairs can be unified whereas 'c can be substituted into 'e list and 'd can be substituted to 
+    a function which takes a parameter 'a and returns 'b. After the substitutions, the pairs will be
+    (’a -> ’b) -> 'e list and ('a -> 'b) -> 'e list
 *)
 
 (* Various type and function definitions, do not edit *)
