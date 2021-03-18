@@ -318,7 +318,11 @@ let rec eval (e : expr) (env : envir) : value =
 
 // Problem 4
 
-let rec unify (t1 : typ) (t2 : typ) : unit = failwith "to implement"
+let rec unify (t1 : typ) (t2 : typ) : unit =
+    match t1, t2 with
+    | Float, Float -> ensureFloat t1
+    | Vector v1, Vector v2 -> unifyLength v1 v2
+
 
 // Problem 5
 
