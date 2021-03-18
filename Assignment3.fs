@@ -44,38 +44,21 @@ let y = 3 in // y = 3
 
 let rec list_fun f a xs = 
     match xs with
+    | [] -> a
     | [x] -> x
     | x::xs -> list_fun f x [(f a :: xs).Head]
 
 list_fun (fun x -> "a") "a" ["1";"2";"3"];;
 list_fun (fun x -> 1) 2 [1;2;3];;
 
-//Issue: This has the types f:('a -> 'a) -> a:'a -> xo:'a option -> 'a when 'a : equality
-//Maybe this is wrong but it does its thing
-let rec option_fun f a xo =
-    match xo with
-    | None -> f a
-    | Some x when x = (f a) -> option_fun f x None
-    | Some x -> option_fun f x (Some(f a))
-
-option_fun (fun x -> "") "" (Some "") 
-option_fun (fun x -> 1) 1 (Some 1000) 
-
-
-//Issue: The recursion never stops
-let rec option_fun f a xo =
-    match xo with
-    | None -> f a
-    | Some x -> option_fun f x (Some(f a))
-              
-
-
-
-
 let rec option_fun f a xo =
     match xo with
     | Some x -> option_fun f x None
-    | None -> f a
+    | None -> f (f a)
+              
+option_fun (fun x -> "") "" (Some "");; 
+option_fun (fun x -> 1) 100 (Some 1000);; 
+
 
 
 // Problem 3
