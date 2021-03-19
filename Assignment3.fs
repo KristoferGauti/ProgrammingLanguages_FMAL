@@ -391,11 +391,18 @@ let inferTop e =
 // Problem 6
 // Complete the following declaration, and uncomment it
 let no_generalize : expr = 
-    LetFunNoGeneralize ("f","x", Average(Var "x"), Call(Var "f", Vect[1.0; 2.0])) //vector and take the average 
-    
+    LetFunNoGeneralize ("f","x", Average(Var "x"), 
+    Plus(
+        Call(Var "f", Vect [1.6; 2.1; 1.5]), 
+        Call(Var "f", Vect [1.0; 3.3]))
+    )
+   
 let yes_generalize : expr = 
-    LetFun ("f","x", Average(Var "x"), Call(Var "f", Vect[1.0; 2.0]))
-
+    LetFun ("f","x", Average(Var "x"), 
+    Plus(
+        Call(Var "f", Vect [1.6; 2.1; 1.5]), 
+        Call(Var "f", Vect [1.0; 3.3]))
+    )
 
 inferTop no_generalize;; //--> supposed to fail
 inferTop yes_generalize;; //--> supposed to succeed
