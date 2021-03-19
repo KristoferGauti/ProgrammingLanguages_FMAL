@@ -27,7 +27,6 @@ fun 2 -> 2+4) + (fun 3 -> 3+4) -> (2+4 + 3+4) -> y = 13
 Thus the return value of the function is 41 whereas 
 (fun 2 -> 2 + 13) + (fun 13 -> 13 + 13) -> (2+13) + (13+13) -> 41
 
-*)
 //Static scoping
 let y = 3 in // y = 3
     let f g = g 2 + g y in // f g = g 2 + g 3 
@@ -40,6 +39,7 @@ let y = 3 in // y = 3
         let y = f (fun x -> x + 4) in // y = f ((2+4 + 3+4)) -> y = 13
             f (fun x -> x + y) // (fun 2 -> 2 + 13) + (fun 13 -> 13 + 13) -> (2+13) + (13+13) -> 41
 
+*)
 // Problem 2
 
 let rec list_fun f a xs = 
@@ -48,16 +48,16 @@ let rec list_fun f a xs =
     | [x] -> x
     | x::xs -> list_fun f x [f a]
 
-list_fun (fun x -> "a") 1 ["1";"2";"3"];;
-list_fun (fun x -> 1) 2 [1;2;3];;
+//list_fun (fun x -> "a") 1 ["1";"2";"3"];;
+//list_fun (fun x -> 1) 2 [1;2;3];;
 
 let rec option_fun f a xo =
     match xo with
     | Some x -> option_fun f x None
     | None -> f (f a)
               
-option_fun (fun x -> "") "" (Some "");; 
-option_fun (fun x -> 1) 100 (Some 1000);; 
+//option_fun (fun x -> "") "" (Some "");; 
+//option_fun (fun x -> 1) 100 (Some 1000);; 
 
 
 
@@ -404,6 +404,6 @@ let yes_generalize : expr =
         Call(Var "f", Vect [1.0; 3.3]))
     )
 
-inferTop no_generalize;; //--> supposed to fail
-inferTop yes_generalize;; //--> supposed to succeed
+//inferTop no_generalize;; //--> supposed to fail
+//inferTop yes_generalize;; //--> supposed to succeed
 
