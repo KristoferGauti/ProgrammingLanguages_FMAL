@@ -48,7 +48,7 @@ let rec list_fun f a xs =
     | [x] -> x
     | x::xs -> list_fun f x [f a]
 
-list_fun (fun x -> "a") "a" ["1";"2";"3"];;
+list_fun (fun x -> "a") 1 ["1";"2";"3"];;
 list_fun (fun x -> 1) 2 [1;2;3];;
 
 let rec option_fun f a xo =
@@ -390,7 +390,13 @@ let inferTop e =
 
 // Problem 6
 // Complete the following declaration, and uncomment it
+let no_generalize : expr = 
+    LetFunNoGeneralize ("f","x", Average(Var "x"), Call(Var "f", Vect[1.0; 2.0])) //vector and take the average 
+    
+let yes_generalize : expr = 
+    LetFun ("f","x", Average(Var "x"), Call(Var "f", Vect[1.0; 2.0]))
 
-// let no_generalize : expr = ...
 
+inferTop no_generalize;; //--> supposed to fail
+inferTop yes_generalize;; //--> supposed to succeed
 
