@@ -163,7 +163,14 @@ let make_copy =
 // (i)
 // void array_to_list(dest_p, a, length) {
 //   var cur;
-//   COMPLETE THIS
+//   *dest_p = 0;
+//   while (length)
+//     length = length - 1
+//     cur = alloc(2)
+//     cur = a + length 
+//     *(cur + 1) = *dest_p
+//     dest_p = cur
+//     
 // }
 let array_to_list =
     ("array_to_list", ["dest_p"; "a"; "length"], ["cur"], Block [
