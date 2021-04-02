@@ -6,7 +6,7 @@ STUDENT NAMES HERE: Bergur Tareq Tamimi Einarsson & Kristofer Gauti Þórhallsso
 
 *)
 
-module Assignment4
+//module Assignment4
 
 // Problem 1
 
@@ -122,7 +122,10 @@ let make_range =
 // }
 let print_array =
     ("print_array", ["a"; "length"], ["i"], Block [
-    // COMPLETE THIS
+    While(Op ("<",Access(AccVar "i"), Access(AccVar "length")),Block[
+        Print(Access(AccDeref(Op("+", Access(AccVar "a"),Access(AccVar("i")) ))))
+        Assign (AccVar "i", Op ("+", Access (AccVar "i"), Num 1));
+    ])
     ])
 
 // void memcpy(dest, src, length) {
