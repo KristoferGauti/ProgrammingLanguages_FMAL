@@ -126,7 +126,7 @@ let print_array =
         Print(Access(AccDeref(Op("+", Access(AccVar "a"),Access(AccVar("i")) ))))
         Assign (AccVar "i", Op ("+", Access (AccVar "i"), Num 1));
     ])
-    ])
+])
 
 // void memcpy(dest, src, length) {
 //   while (length) {
@@ -138,7 +138,12 @@ let print_array =
 // }
 let memcpy =
     ("memcpy", ["dest"; "src"; "length"], [], Block [
-    // COMPLETE THIS
+        While(Op (">",Access(AccVar "length"), Num 0), Block[
+            Assign(AccDeref(Access(AccVar "dest")), Access(AccDeref(Access(AccVar "src"))))
+            Assign(AccVar "dest", Op("+", Access(AccVar "dest"), Num 1))
+            Assign(AccVar "src", Op("+", Access(AccVar "src"), Num 1))
+            Assign(AccVar "length", Op("-", Access(AccVar "length"), Num 1))
+        ])
     ])
 
 // void make_copy(dest_p, src, length) {
