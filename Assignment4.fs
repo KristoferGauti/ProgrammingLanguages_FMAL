@@ -15,7 +15,7 @@ int *f(int *t, int *u) {
     if ( *t == 0) {
         *t = 50;
         return u;
-    }else {
+    } else {
         return t;
     }
 }
@@ -35,13 +35,17 @@ void h(int x, int y) {
 }
 
 ANSWER 1 HERE:
-(i) g(1, 2) prints ..., h(1, 2) prints ...
+(i) g(1, 2) prints 2, h(1, 2) prints 2
 
+(ii) g(1, 0) prints 0, h(1, 0) prints 0
 
-(ii) g(1, 0) prints ..., h(1, 0) prints ...
-
-(iii) g(0, 0) prints ..., h(0, 0) prints ...
-    ...
+(iii) g(0, 0) prints 0, h(0, 0) prints 50
+    when g(0, 0) is executed, it returns 0 and does not change x and y
+    When h(0, 0) is executed, it assigns a pointer to the address of x
+    then p is assigned again to a function that returns &y. Then f(p, &y)
+    is called. Since p = &y, the function f(&y, &y) is being executed.
+    in function f *t is being returned which points to the same address as
+    *u. Thus h(0, 0) will print y = 50
 *)
 
 
