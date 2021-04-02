@@ -152,7 +152,8 @@ let memcpy =
 // }
 let make_copy =
     ("make_copy", ["dest_p"; "src"; "length"], [], Block [
-    // COMPLETE THIS
+        Alloc(AccDeref(Access(AccVar "dest_p")), Access(AccVar "length"))
+        Call("memcpy", [Access(AccDeref(Access(AccVar "dest_p"))); Access(AccVar("src")); Access(AccVar("length"))])
     ])
 
 
