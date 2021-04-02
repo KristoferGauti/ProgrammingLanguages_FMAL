@@ -12,7 +12,7 @@ module Assignment4
 
 (*
 int *f(int *t, int *u) {
-    if (*t == 0) {
+    if ( *t == 0) {
         *t = 50;
         return u;
     }else {
