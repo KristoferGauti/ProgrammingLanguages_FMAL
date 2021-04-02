@@ -11,13 +11,37 @@ module Assignment4
 // Problem 1
 
 (*
+int *f(int *t, int *u) {
+    if (*t == 0) {
+        *t = 50;
+        return u;
+    }else {
+        return t;
+    }
+}
+
+void g(int x, int y) {
+    f(&x, &y);
+    f(&x, &y);
+    print y;
+}
+
+void h(int x, int y) {
+    int *p;
+    p = &x;
+    p = f(p, &y);
+    f(p, &y);
+    print y;
+}
+
 ANSWER 1 HERE:
-    (i) g(1, 2) prints ..., h(1, 2) prints ...
+(i) g(1, 2) prints ..., h(1, 2) prints ...
 
-   (ii) g(1, 0) prints ..., h(1, 0) prints ...
 
-  (iii) g(0, 0) prints ..., h(0, 0) prints ...
-        ...
+(ii) g(1, 0) prints ..., h(1, 0) prints ...
+
+(iii) g(0, 0) prints ..., h(0, 0) prints ...
+    ...
 *)
 
 
@@ -27,10 +51,10 @@ type expr =
     | Addr of access              // &a
     | Num of int                  // n
     | Op of string * expr * expr  // e1 op e2
-and access =
+    and access =
     | AccVar of string            // x
     | AccDeref of expr            // *p
-and stmt =
+    and stmt =
     | Alloc of access * expr        // p = alloc e
     | Print of expr               // print e
     | Assign of access * expr       // p = e
@@ -39,12 +63,12 @@ and stmt =
     | Block of stmt list          // { stmt1; ...; stmtN }
     | If of expr * stmt * stmt    // if (e) e1 else e2
     | While of expr * stmt        // while (e) stmt
-and fundec =
+    and fundec =
     string *                      // function name
     string list *                 // argument names
     string list *                 // local variable names
     stmt                          // function body
-and program =
+    and program =
     | Prog of fundec list
 
 // Examples of concrete and abstract syntax
@@ -56,11 +80,11 @@ and program =
 //   print(*(p + 1));
 // }
 let ex =
-  ("main", [], ["p"], Block [
-    Alloc (AccVar "p", Num 2);
-    Assign (AccDeref (Op ("+", Access (AccVar "p"), Num 1)), Num 11);
-    Print (Access (AccDeref (Op ("+", Access (AccVar "p"), Num 1))))
-  ])
+    ("main", [], ["p"], Block [
+        Alloc (AccVar "p", Num 2);
+        Assign (AccDeref (Op ("+", Access (AccVar "p"), Num 1)), Num 11);
+        Print (Access (AccDeref (Op ("+", Access (AccVar "p"), Num 1))))
+    ])
 
 // void make_range(dest_p, lower, upper) {
 //   var i;
@@ -72,14 +96,14 @@ let ex =
 //   }
 // }
 let make_range =
-  ("make_range", ["dest_p"; "lower"; "upper"], ["i"], Block [
-    Alloc (AccDeref (Access (AccVar "dest_p")), Op ("+", Op ("-", Access (AccVar "upper"), Access (AccVar "lower")), Num 1));
-    While (Op ("<=", Access (AccVar "lower"),  Access (AccVar "upper")), Block [
-      Assign (AccDeref (Op ("+", Access (AccDeref (Access (AccVar "dest_p"))), Access (AccVar "i"))), Access (AccVar "lower"));
-      Assign (AccVar "i", Op ("+", Access (AccVar "i"), Num 1));
-      Assign (AccVar "lower", Op ("+", Access (AccVar "lower"), Num 1))
+    ("make_range", ["dest_p"; "lower"; "upper"], ["i"], Block [
+        Alloc (AccDeref (Access (AccVar "dest_p")), Op ("+", Op ("-", Access (AccVar "upper"), Access (AccVar "lower")), Num 1));
+        While (Op ("<=", Access (AccVar "lower"),  Access (AccVar "upper")), Block [
+            Assign (AccDeref (Op ("+", Access (AccDeref (Access (AccVar "dest_p"))), Access (AccVar "i"))), Access (AccVar "lower"));
+            Assign (AccVar "i", Op ("+", Access (AccVar "i"), Num 1));
+            Assign (AccVar "lower", Op ("+", Access (AccVar "lower"), Num 1))
+        ])
     ])
-  ])
 
 
 
@@ -93,9 +117,9 @@ let make_range =
 //   }
 // }
 let print_array =
-  ("print_array", ["a"; "length"], ["i"], Block [
+    ("print_array", ["a"; "length"], ["i"], Block [
     // COMPLETE THIS
-  ])
+    ])
 
 // void memcpy(dest, src, length) {
 //   while (length) {
@@ -106,18 +130,18 @@ let print_array =
 //   }
 // }
 let memcpy =
-  ("memcpy", ["dest"; "src"; "length"], [], Block [
+    ("memcpy", ["dest"; "src"; "length"], [], Block [
     // COMPLETE THIS
-  ])
+    ])
 
 // void make_copy(dest_p, src, length) {
 //   *dest_p = alloc(length);
 //   memcpy(*dest_p, src, length);
 // }
 let make_copy =
-  ("make_copy", ["dest_p"; "src"; "length"], [], Block [
+    ("make_copy", ["dest_p"; "src"; "length"], [], Block [
     // COMPLETE THIS
-  ])
+    ])
 
 
 // Problem 3
@@ -129,7 +153,7 @@ let make_copy =
 //   COMPLETE THIS
 // }
 let array_to_list =
-  ("array_to_list", ["dest_p"; "a"; "length"], ["cur"], Block [
+    ("array_to_list", ["dest_p"; "a"; "length"], ["cur"], Block [
     Assign (AccDeref (Access (AccVar "dest_p")), Num 0);
     While (Access (AccVar "length"), Block [
       Assign (AccVar "length", Op ("-", Access (AccVar "length"), Num 1));
@@ -138,15 +162,15 @@ let array_to_list =
       Assign (AccDeref (Op ("+", Access (AccVar "cur"), Num 1)), Access (AccDeref (Access (AccVar "dest_p"))));
       Assign (AccDeref (Access (AccVar "dest_p")), Access (AccVar "cur"))
     ])
-  ])
+    ])
 
 // (ii)
 let print_list =
-  ("print_list", ["l"], [], Block [
+    ("print_list", ["l"], [], Block [
     // COMPLETE THIS
     // (You may want to add local variables by changing the empty list
     // above.)
-  ])
+    ])
 
 
 
@@ -158,25 +182,25 @@ let rec lookup env x =
     | []          -> failwith (x + " not found")
     | (y, v)::env -> if x = y then v else lookup env x
 
-type locEnv = int envir * int
-type funEnv = (string list * string list * stmt) envir
+    type locEnv = int envir * int
+    type funEnv = (string list * string list * stmt) envir
 
-type address = int
-type store = Map<address,int> * int
-let emptyStore = (Map.empty<address,int>, 1)
-let setSto ((map, nextloc) : store) addr value = map.Add (addr, value), nextloc
-let getSto ((map, nextloc) : store) addr = map.Item addr
-let allocSto ((map, nextloc) : store) length =
-  let r = nextloc
-  let nextloc' = r + length
-  let map' = List.fold (fun (m : Map<address,int>) addr -> m.Add (addr, 0)) map [r..(nextloc' - 1)]
-  let sto' = map', nextloc'
-  sto', r
+    type address = int
+    type store = Map<address,int> * int
+    let emptyStore = (Map.empty<address,int>, 1)
+    let setSto ((map, nextloc) : store) addr value = map.Add (addr, value), nextloc
+    let getSto ((map, nextloc) : store) addr = map.Item addr
+    let allocSto ((map, nextloc) : store) length =
+    let r = nextloc
+    let nextloc' = r + length
+    let map' = List.fold (fun (m : Map<address,int>) addr -> m.Add (addr, 0)) map [r..(nextloc' - 1)]
+    let sto' = map', nextloc'
+    sto', r
 
-let bindVar x v (env, nextloc) sto : locEnv * store =
+    let bindVar x v (env, nextloc) sto : locEnv * store =
     let env' = (x, nextloc) :: env
     ((env', nextloc - 1), setSto sto nextloc v)
-let rec bindVars xs vs locEnv sto : locEnv * store =
+    let rec bindVars xs vs locEnv sto : locEnv * store =
     match xs, vs with
     | [], []       -> locEnv, sto
     | x::xs, v::vs ->
@@ -184,7 +208,7 @@ let rec bindVars xs vs locEnv sto : locEnv * store =
         bindVars xs vs locEnv' sto'
     | _ -> failwith "parameter/argument mismatch"
 
-let initFunEnv (fundecs : fundec list) : funEnv =
+    let initFunEnv (fundecs : fundec list) : funEnv =
     let rec addv decs funEnv =
         match decs with
         | [] -> funEnv
@@ -196,90 +220,90 @@ let initFunEnv (fundecs : fundec list) : funEnv =
 
 // Interpreter
 let rec eval (e : expr) (locEnv : locEnv) (funEnv : funEnv) (sto : store) : int =
-    match e with
-    | Access acc      -> getSto sto (access acc locEnv funEnv sto)
-    | Num i           -> i
-    | Addr acc        -> access acc locEnv funEnv sto
-    | Op (op, e1, e2) ->
-        let i1 = eval e1 locEnv funEnv sto
-        let i2 = eval e2 locEnv funEnv sto
-        match op with
-        | "*"  -> i1 * i2
-        | "+"  -> i1 + i2
-        | "-"  -> i1 - i2
-        | "/"  -> i1 / i2
-        | "%"  -> i1 % i2
-        | "==" -> if i1 =  i2 then 1 else 0
-        | "!=" -> if i1 <> i2 then 1 else 0
-        | "<"  -> if i1 <  i2 then 1 else 0
-        | "<=" -> if i1 <= i2 then 1 else 0
-        | ">=" -> if i1 >= i2 then 1 else 0
-        | ">"  -> if i1 >  i2 then 1 else 0
-        | _    -> failwith ("unknown primitive " + op)
+match e with
+| Access acc      -> getSto sto (access acc locEnv funEnv sto)
+| Num i           -> i
+| Addr acc        -> access acc locEnv funEnv sto
+| Op (op, e1, e2) ->
+    let i1 = eval e1 locEnv funEnv sto
+    let i2 = eval e2 locEnv funEnv sto
+    match op with
+    | "*"  -> i1 * i2
+    | "+"  -> i1 + i2
+    | "-"  -> i1 - i2
+    | "/"  -> i1 / i2
+    | "%"  -> i1 % i2
+    | "==" -> if i1 =  i2 then 1 else 0
+    | "!=" -> if i1 <> i2 then 1 else 0
+    | "<"  -> if i1 <  i2 then 1 else 0
+    | "<=" -> if i1 <= i2 then 1 else 0
+    | ">=" -> if i1 >= i2 then 1 else 0
+    | ">"  -> if i1 >  i2 then 1 else 0
+    | _    -> failwith ("unknown primitive " + op)
 and access acc locEnv funEnv (sto : store) : int =
-    match acc with
-    | AccVar x   -> lookup (fst locEnv) x
-    | AccDeref e -> eval e locEnv funEnv sto
+match acc with
+| AccVar x   -> lookup (fst locEnv) x
+| AccDeref e -> eval e locEnv funEnv sto
 and evals es locEnv funEnv (sto : store) : int list =
-    List.map (fun e -> eval e locEnv funEnv sto) es
+List.map (fun e -> eval e locEnv funEnv sto) es
 and callfun f es locEnv (funEnv : funEnv) (sto : store) : store =
-    let _, nextloc = locEnv
-    let paramNames, localNames, fBody = lookup funEnv f
-    let arguments = evals es locEnv funEnv sto
-    // local variables are initialized to 0
-    let localValues = List.map (fun _ -> 0) localNames
-    let fBodyEnv, sto' = bindVars (paramNames @ localNames) (arguments @ localValues) ([], nextloc) sto
-    exec fBody fBodyEnv funEnv sto'
+let _, nextloc = locEnv
+let paramNames, localNames, fBody = lookup funEnv f
+let arguments = evals es locEnv funEnv sto
+// local variables are initialized to 0
+let localValues = List.map (fun _ -> 0) localNames
+let fBodyEnv, sto' = bindVars (paramNames @ localNames) (arguments @ localValues) ([], nextloc) sto
+exec fBody fBodyEnv funEnv sto'
 
 
 
 // Problem 4
 
 and exec stm (locEnv : locEnv) (funEnv : funEnv) (sto : store) : store =
-    match stm with
-    | Print e ->
-        let res = eval e locEnv funEnv sto
-        printf "%d " res;
-        sto
-    | Call (f, es) -> callfun f es locEnv funEnv sto
-    | Assign (acc, e) ->
-        let loc = access acc locEnv funEnv sto
-        let res = eval e locEnv funEnv sto
-        setSto sto loc res
-    | TestAndSet (p, q) ->
-        failwith "not implemented"
-    | Alloc (acc, e) ->
-        let loc = access acc locEnv funEnv sto
-        let n = eval e locEnv funEnv sto
-        let sto', res = allocSto sto n
-        setSto sto' loc res
-    | Block stms ->
-        List.fold (fun sto' s -> exec s locEnv funEnv sto') sto stms
-    | If (e, stm1, stm2) ->
+match stm with
+| Print e ->
+    let res = eval e locEnv funEnv sto
+    printf "%d " res;
+    sto
+| Call (f, es) -> callfun f es locEnv funEnv sto
+| Assign (acc, e) ->
+    let loc = access acc locEnv funEnv sto
+    let res = eval e locEnv funEnv sto
+    setSto sto loc res
+| TestAndSet (p, q) ->
+    failwith "not implemented"
+| Alloc (acc, e) ->
+    let loc = access acc locEnv funEnv sto
+    let n = eval e locEnv funEnv sto
+    let sto', res = allocSto sto n
+    setSto sto' loc res
+| Block stms ->
+    List.fold (fun sto' s -> exec s locEnv funEnv sto') sto stms
+| If (e, stm1, stm2) ->
+    let v = eval e locEnv funEnv sto
+    if v <> 0 then exec stm1 locEnv funEnv sto
+              else exec stm2 locEnv funEnv sto
+| While (e, body) ->
+    let rec loop sto =
         let v = eval e locEnv funEnv sto
-        if v <> 0 then exec stm1 locEnv funEnv sto
-                  else exec stm2 locEnv funEnv sto
-    | While (e, body) ->
-        let rec loop sto =
-            let v = eval e locEnv funEnv sto
-            if v <> 0 then loop (exec body locEnv funEnv sto)
-                    else sto
-        loop sto
+        if v <> 0 then loop (exec body locEnv funEnv sto)
+                else sto
+    loop sto
 
 // Run a complete program
 let run (Prog topdecs) vs =
-    let funEnv = initFunEnv topdecs
-    let locEnv = ([], System.Int32.MaxValue)
-    let sto = emptyStore
-    callfun "main" [] locEnv funEnv sto
+let funEnv = initFunEnv topdecs
+let locEnv = ([], System.Int32.MaxValue)
+let sto = emptyStore
+callfun "main" [] locEnv funEnv sto
 
 
 
 // Problem 5
 
 (* ANSWER 5 HERE
-    (i) This prints 10 because ...
-   (ii) This prints 0 because ...
+(i) This prints 10 because ...
+(ii) This prints 0 because ...
 *)
 
 // void main() {
@@ -290,14 +314,14 @@ let run (Prog topdecs) vs =
 //   print(*p);
 // }
 let prog5i =
-  Prog (
-    [ ("main", [], ["p"; "q"], Block [
-        Alloc (AccVar "p", Num 1);
-        Alloc (AccVar "q", Num 1);
-        Assign (AccDeref (Op ("-", Access (AccVar "q"), Num 1)), Num 10);
-        Print (Access (AccDeref (Access (AccVar "p"))))
-      ])
-    ])
+Prog (
+[ ("main", [], ["p"; "q"], Block [
+    Alloc (AccVar "p", Num 1);
+    Alloc (AccVar "q", Num 1);
+    Assign (AccDeref (Op ("-", Access (AccVar "q"), Num 1)), Num 10);
+    Print (Access (AccDeref (Access (AccVar "p"))))
+  ])
+])
 
 // void f() {
 //   var i;
@@ -313,18 +337,18 @@ let prog5i =
 //   print a;
 // }
 let prog5ii =
-  Prog (
-    [ ("f", [], ["i"], Block [
-        While (Op ("!=", Access (AccDeref (Op ("+", Addr (AccVar "i"), Access (AccVar "i")))), Num 1234), Block [
-          Assign (AccVar "i", Op ("+", Access (AccVar "i"), Num 1))
-        ]);
-        Assign (AccDeref (Op ("+", Addr (AccVar "i"), Access (AccVar "i"))), Num 0)
-      ])
-    ; ("main", [], ["a"; "b"; "c"; "d"], Block [
-        Assign (AccVar "a", Num 1234);
-        Call ("f", []);
-        Print (Access (AccVar "a"))
-      ])
-    ])
+Prog (
+[ ("f", [], ["i"], Block [
+    While (Op ("!=", Access (AccDeref (Op ("+", Addr (AccVar "i"), Access (AccVar "i")))), Num 1234), Block [
+      Assign (AccVar "i", Op ("+", Access (AccVar "i"), Num 1))
+    ]);
+    Assign (AccDeref (Op ("+", Addr (AccVar "i"), Access (AccVar "i"))), Num 0)
+  ])
+; ("main", [], ["a"; "b"; "c"; "d"], Block [
+    Assign (AccVar "a", Num 1234);
+    Call ("f", []);
+    Print (Access (AccVar "a"))
+  ])
+])
 
 
