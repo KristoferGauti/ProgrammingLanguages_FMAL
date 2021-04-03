@@ -195,28 +195,17 @@ let array_to_list =
 
 let print_list =
     ("print_list", ["l"], ["cur"], Block [
-    
-        //*l = *(l+1) stak+1
-        //&l = *&(l+1) memory+1
-        Print(Access(AccDeref(Access(AccVar "l")))) // print(*(l))
-        Assign(AccDeref(Addr(AccVar("l"))), Op("+", Addr(AccVar "l"), Num 1))
-        Print(Access(AccDeref(Access(AccVar "l")))) // print(*(l))
-        
+        // cur = l
+        Assign(AccVar("cur"),Access(AccVar "l"))
 
+        While (Access(AccVar("cur")), Block [
+            Print(Access(AccDeref(Access(AccVar "cur"))))
+            // cur = curr+1
+            Assign(AccVar("cur"),Op("+", Access(AccVar("cur")), Num 1))
+            // cur = *cur
+            Assign(AccVar("cur"),Access(AccDeref(Access(AccVar("cur")))))
+        ])
 
-        //Assign(AccVar "cur", Access(AccDeref(Access(AccVar "l"))))
-        //Print(Access(AccVar "cur"))
-        // While(Access(AccVar "cur"), Block [
-
-        // ])
-
-
-        //pseudocode for printing linked list
-        // Assign(AccVar "cur", Access(AccVar "l"))
-        // While(Access(AccVar "cur"), Block [
-        //     Print(Access(AccDeref(Access(AccVar "cur"))))
-        //     Assign(AccDeref(Access(AccVar "cur")), Access(AccDeref(Op("+", Access(AccVar "cur"), Num 1))))
-        // ])
     ])
 
 
