@@ -307,7 +307,19 @@ and exec stm (locEnv : locEnv) (funEnv : funEnv) (sto : store) : store =
         let res = eval e locEnv funEnv sto
         setSto sto loc res
     | TestAndSet (p, q) ->
-        failwith "not implemented"
+        // get the address of q
+        let qaddr = eval q locEnv funEnv sto
+        // get the address of p
+        let paddr = eval p locEnv funEnv sto
+        // get the value of q
+        let qVal = getSto sto qaddr
+        // get the new sto opject, setting value of q to
+        // the address of p
+        let newSto = setSto sto paddr qVal
+        // give value 1 to the address of q
+        setSto newSto qaddr 1
+
+
     | Alloc (acc, e) ->
         let loc = access acc locEnv funEnv sto
         let n = eval e locEnv funEnv sto
