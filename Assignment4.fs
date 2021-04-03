@@ -185,11 +185,38 @@ let array_to_list =
     ])
 
 // (ii)
+//Python code for printing a linked list
+(*
+    cur = l
+    while cur:
+        print( *(cur) )
+        *curr = *(cur + 1)
+*)
+
 let print_list =
-    ("print_list", ["l"], [], Block [
-    // COMPLETE THIS
-    // (You may want to add local variables by changing the empty list
-    // above.)
+    ("print_list", ["l"], ["cur"], Block [
+    
+        //*l = *(l+1) stak+1
+        //&l = *&(l+1) memory+1
+        Print(Access(AccDeref(Access(AccVar "l")))) // print(*(l))
+        Assign(AccDeref(Addr(AccVar("l"))), Op("+", Addr(AccVar "l"), Num 1))
+        Print(Access(AccDeref(Access(AccVar "l")))) // print(*(l))
+        
+
+
+        //Assign(AccVar "cur", Access(AccDeref(Access(AccVar "l"))))
+        //Print(Access(AccVar "cur"))
+        // While(Access(AccVar "cur"), Block [
+
+        // ])
+
+
+        //pseudocode for printing linked list
+        // Assign(AccVar "cur", Access(AccVar "l"))
+        // While(Access(AccVar "cur"), Block [
+        //     Print(Access(AccDeref(Access(AccVar "cur"))))
+        //     Assign(AccDeref(Access(AccVar "cur")), Access(AccDeref(Op("+", Access(AccVar "cur"), Num 1))))
+        // ])
     ])
 
 
