@@ -3,10 +3,9 @@
 (*
 STUDENT NAMES HERE: Bergur Tareq Tamimi Einarsson & Kristofer Gauti Þórhallsson
 
-
 *)
 
-//module Assignment4
+module Assignment4
 
 // Problem 1
 
@@ -350,17 +349,18 @@ let run (Prog topdecs) vs =
 // Problem 5
 
 (* ANSWER 5 HERE
-(i) This prints 10 because p and q allocate a memory next to each other
-so if p gets address 10 and q address 11, line 4 in the function points
-to the memory for location 10(which belongs to p) since *(11 - 1) --> *10,
-and value 10 is added to that location, which is the reason why the value
-in address of p is 10
-(ii) This prints 0. Assuming that 1234 is not stored anywhere else in memory 
-    that would be the case. At first value 1234 is stored somewhere in the memory and
-    variable a points to the same place in memory, what function f() does is that 
-    it searches in any memory location that contains the same value until it finds it, 
-    when it does, it quits the while loop, and assigns, to the same location as 1234 
-    was stored in, value 0 so when a is printed it now contains value 0 but not 10.  
+(i) This prints 10 because p and q allocate a memory next to each other 
+    and thus p and q are addresses. For instance if p gets address 10 
+    and q address 11. In line 370, the value 10 is dereferenced to the 
+    memory location q-1 which is also the memory address p. Thus in our 
+    example p = q-1 which means. That is the the reason why the value in 
+    address of p is 10.
+(ii) This prints 0, assuming that 1234 is not stored anywhere else in memory. 
+    At first, the value 1234 is stored somewhere in the memory and
+    the variable a points to the same place in memory. What function f() does is that 
+    it searches in any memory location that contains the same value until it finds it. 
+    When it does, it quits the while loop, and assigns, to the same location as 1234 
+    was stored in, so when a is printed out, it contains the alue 0 but not 1234.  
 *)
 
 // void main() {
