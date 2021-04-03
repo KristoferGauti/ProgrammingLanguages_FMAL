@@ -350,8 +350,17 @@ let run (Prog topdecs) vs =
 // Problem 5
 
 (* ANSWER 5 HERE
-(i) This prints 10 because ...
-(ii) This prints 0 because ...
+(i) This prints 10 because p and q allocate a memory next to each other
+so if p gets address 10 and q address 11, line 4 in the function points
+to the memory for location 10(which belongs to p) since *(11 - 1) --> *10,
+and value 10 is added to that location, which is the reason why the value
+in address of p is 10
+(ii) This prints 0. Assuming that 1234 is not stored anywhere else in memory 
+    that would be the case. At first value 1234 is stored somewhere in the memory and
+    variable a points to the same place in memory, what function f() does is that 
+    it searches in any memory location that contains the same value until it finds it, 
+    when it does, it quits the while loop, and assigns, to the same location as 1234 
+    was stored in, value 0 so when a is printed it now contains value 0 but not 10.  
 *)
 
 // void main() {
